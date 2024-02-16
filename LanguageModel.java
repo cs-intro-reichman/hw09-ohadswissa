@@ -95,18 +95,16 @@ public void train(String fileName) {
 	public static char getRandomChar(List probs) {
 		ListIterator iterator = new ListIterator(probs.getFirstNode());
 		double r = Math.random();
-		char result = "_"
         while (iterator.hasNext()) 
         {
             CharData current = iterator.next();
             double val = current.cp;
                if ( val > r)
                  {
-                 	result = current.chr;
-                 	break;
+                 	return current.chr;
                  }
         }
-        return result;
+        return '_';
     }				
 		
 	
