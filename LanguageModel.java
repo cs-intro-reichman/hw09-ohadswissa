@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Random;
 
+
 public class LanguageModel {
 
     // The map of this model.
@@ -92,11 +93,11 @@ public void train(String fileName) {
     				
 	  
     // Returns a random character from the given probabilities list.
-	public static char getRandomChar(List probs) 
+	public char getRandomChar(List probs) 
 	{
 		calculateProbabilities(probs);
 		ListIterator iterator = new ListIterator(probs.getFirstNode());
-		double r = Math.random();
+		double r = this.randomGenerator.nextDouble();//using random generator as asked
 		CharData first = probs.getFirstNode().cp;
 		char top =  first.chr;
         if (first.cp > r) 
@@ -133,17 +134,17 @@ public void train(String fileName) {
     // Initialize the generated text with the initial text
     StringBuilder gt = new StringBuilder(initialText);
     // Set the initial window to the last windowLength characters of the initial text
-    String window = initialText.substring(initialText.length() - windowLength);
+    String window = initialText.substring(Math.max(0,initialText.length() - windowLength));
     // Continue generating text until the length of the generated text reaches the desired text length
     while (gt.length() < textLength) {
         // Get the list associated with the current window from the Hashmap
-        List probs = CharDataMap.get(window);
+        List  probabilitieslist = CharDataMap.get(window);
         // If the current window is not found in the map, stop the process and return the generated text so far
-        if (probs == null) {
+        if (probabilitieslist == null) {
             break;
         }
         // Generate a random character based on the probabilities in the list
-        char nextChar = getRandomChar(probs);
+        char nextChar = getRandomChar(probabilitieslist);
         // connects the generated character to the generated text based on the stringbuilder
         gt.append(nextChar);
         // Move the window by removing the first character and adding the newly generated character
