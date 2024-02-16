@@ -86,7 +86,6 @@ public void train(String fileName) {
         	CharData current = iterator.next();
         	current.p = ((double)current.count) / totalCount;
             current.cp = current.p + prev;
-            //current.cp = (current.cp * 100.0) / 100.0;
             prev = current.cp;
         }
       } 
