@@ -97,6 +97,12 @@ public void train(String fileName) {
 		calculateProbabilities(probs);
 		ListIterator iterator = new ListIterator(probs.getFirstNode());
 		double r = Math.random();
+		CharData first = probs.getFirstNode().cp;
+		char top =  first.chr;
+        if (first.cp > r) 
+        {
+        return top;
+        }
         while (iterator.hasNext()) 
         {
             CharData current = iterator.next();
