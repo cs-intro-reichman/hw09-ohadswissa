@@ -92,7 +92,9 @@ public void train(String fileName) {
     				
 	  
     // Returns a random character from the given probabilities list.
-	public static char getRandomChar(List probs) {
+	public static char getRandomChar(List probs) 
+	{
+		calculateProbabilities(probs);
 		ListIterator iterator = new ListIterator(probs.getFirstNode());
 		double r = Math.random();
         while (iterator.hasNext()) 
