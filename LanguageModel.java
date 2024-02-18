@@ -37,37 +37,33 @@ public void train(String fileName) {
    String window = "";
    char c;
    In in = new In(fileName);
-   while (!in.isEmpty()) 
-   {
-      // Gets the next character
-      c  = in.readChar();
-      window += c;
-      // Checks if the window is already in the map
-      //List probs = CharDataMap.get(window);
-      // If the window was not found in the map
-      for (int i = 0; i < window.length(); i++)
-       {
-        String subWindow = window.substring(i);
-        List probs = CharDataMap.get(subWindow);
+   for (int i = 0; i < windowLength; i++)
+   { 
+     // Gets the next character
+      char temp  = in.readChar();
+      window += temp;
+  }
+  while (!in.isEmpty())
+  {
+    c = in.readChar();
+    List probs = CharDataMap.get(window);
       if (probs == null) 
       // Creates a new empty list, and adds (window,list) to the map
         {
             probs = new List();
-            CharDataMap.put(subWindow, probs);
+            CharDataMap.put(window, probs);
         }
         //Calculates the counts of the current character.
         probs.update(c);
-    }
-        if (window.length() < windowLength) 
-      {
-         window = window.substring(1);
-      }
+        window = (window + c).substring(1);
     }
    // The entire file has been processed, and all the characters have been counted.
    // Proceeds to compute and set the p and cp fields of all the CharData objects
    // in each linked list in the map.
   for (List probs : CharDataMap.values())
+  {
       calculateProbabilities(probs);
+  }
 }
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
@@ -136,11 +132,13 @@ public void train(String fileName) {
         return initialText;
     }
     // Initialize the generated text with the initial text
-    StringBuilder gt = new StringBuilder(initialText);
+    //StringBuilder gt = new StringBuilder(initialText);
     // Set the initial window to the last windowLength characters of the initial text
-    String window = initialText;
+    String window = initialText.substring(initialText.length() - windowLength);
+    String gt = window;
+    int counter = textLength + windowLength;
     // Continue generating text until the length of the generated text reaches the desired text length
-    while (gt.length() < textLength) {
+    while (gt.length() < counter) {
         // Get the list associated with the current window from the Hashmap
         List  probabilitieslist = CharDataMap.get(window);
         // If the current window is not found in the map, stop the process and return the generated text so far
@@ -150,13 +148,13 @@ public void train(String fileName) {
         // Generate a random character based on the probabilities in the list
         char nextChar = getRandomChar(probabilitieslist);
         // connects the generated character to the generated text based on the stringbuilder
-        gt.append(nextChar);
+        gt += nextChar;;
         // Move the window by removing the first character and adding the newly generated character
-        window = window.substring(1) + nextChar;
+        window = gt.substring(gt.length() - windowLength);
     }
 
     // Returns the generated text
-    return gt.toString();
+    return gt;
 }	
     /** Returns a string representing the map of this language model. */
 	public String toString() {
