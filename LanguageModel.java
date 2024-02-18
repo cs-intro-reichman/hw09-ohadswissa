@@ -42,18 +42,22 @@ public void train(String fileName) {
       // Gets the next character
       c  = in.readChar();
       window += c;
-      
       // Checks if the window is already in the map
-      List probs = CharDataMap.get(window);
+      //List probs = CharDataMap.get(window);
       // If the window was not found in the map
+      for (int i = 0; i < window.length(); i++)
+       {
+        String subWindow = window.substring(i);
+        List probs = CharDataMap.get(subWindow);
       if (probs == null) 
       // Creates a new empty list, and adds (window,list) to the map
         {
             probs = new List();
-            CharDataMap.put(window, probs);
+            CharDataMap.put(subWindow, probs);
         }
         //Calculates the counts of the current character.
         probs.update(c);
+    }
         if (window.length() < windowLength) 
       {
          window = window.substring(1);
@@ -134,7 +138,7 @@ public void train(String fileName) {
     // Initialize the generated text with the initial text
     StringBuilder gt = new StringBuilder(initialText);
     // Set the initial window to the last windowLength characters of the initial text
-    String window = initialText.substring(Math.max(0,initialText.length() - windowLength));
+    String window = initialText;
     // Continue generating text until the length of the generated text reaches the desired text length
     while (gt.length() < textLength) {
         // Get the list associated with the current window from the Hashmap
