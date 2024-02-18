@@ -41,11 +41,8 @@ public void train(String fileName) {
    {
       // Gets the next character
       c  = in.readChar();
+      window += c;
       
-      if (window.length() < windowLength) 
-      {
-         window = window.substring(1);
-      }
       // Checks if the window is already in the map
       List probs = CharDataMap.get(window);
       // If the window was not found in the map
@@ -57,7 +54,10 @@ public void train(String fileName) {
         }
         //Calculates the counts of the current character.
         probs.update(c);
-        window += c;
+        if (window.length() < windowLength) 
+      {
+         window = window.substring(1);
+      }
     }
    // The entire file has been processed, and all the characters have been counted.
    // Proceeds to compute and set the p and cp fields of all the CharData objects
